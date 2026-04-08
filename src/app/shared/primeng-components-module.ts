@@ -27,10 +27,11 @@ import { TextareaModule } from 'primeng/textarea';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { RippleModule } from 'primeng/ripple';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule, RippleModule
-  ],exports:[MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule,RippleModule]
+    CommonModule,MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule, RippleModule,ToggleButtonModule
+  ],exports:[MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule,RippleModule,ToggleButtonModule]
 })
 export class PrimengComponentsModule { }

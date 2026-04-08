@@ -10,7 +10,78 @@
             </div>
 
             <div class="form-card">
-                i am form
+                <form class="form">
+                    <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblFirstName' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblLastName' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblEmail' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblPhone' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblDeviceId' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblCompanyName' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblStatus' | translate}}</label>
+                            <p-togglebutton  class="form__input" onLabel="Active" offLabel="In-Active" class="w-24" />
+                            
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblSubscriptionStatus' | translate}}</label>
+                            <p-togglebutton  class="form__input" onLabel="Subscribed" offLabel="Expired" class="w-24" />
+                            
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblSubscriptionEndDate' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
+                            
+                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <p-button class="add-btn form__btn" label="Submit" [routerLink]="['']"></p-button>
+                        </div>
+
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
