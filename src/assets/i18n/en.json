@@ -1,0 +1,16 @@
+{
+  "currentTheme": "en",
+
+  "lblError": "Something went wrong",
+  "lblWarn": "Heads up!",
+  "lblFirstName": "First Name",
+  "lblLastName": "Last Name",
+  "lblEmail": "Email",
+  "lblPhone": "Phone",
+  "lblStatus": "Status",
+  "lblDeviceId": "Device Id",
+  "lblSubscriptionStatus": "Subscription status",
+  "lblSubscriptionEndDate": "Subscription End Date",
+  "lblActions": "Actions",
+  "lblSuccess": "Done!"
+}
