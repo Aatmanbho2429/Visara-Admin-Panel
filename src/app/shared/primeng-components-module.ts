@@ -28,10 +28,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { RippleModule } from 'primeng/ripple';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule, RippleModule,ToggleButtonModule
-  ],exports:[MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule,RippleModule,ToggleButtonModule]
+    CommonModule,MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule, RippleModule,ToggleButtonModule,ConfirmDialogModule
+  ],exports:[MenuModule,AvatarModule,BadgeModule,ButtonModule,RouterModule,SelectModule,FieldsetModule,FileUploadModule,RouterOutlet,CardModule,ImageModule,TreeModule,DividerModule,DataViewModule,TimelineModule,StepperModule,InputTextModule,PasswordModule,ToastModule,TableModule,TagModule,DialogModule,IconFieldModule,InputIconModule,TextareaModule,ProgressSpinnerModule,PanelMenuModule,RippleModule,ToggleButtonModule,ConfirmDialogModule]
 })
 export class PrimengComponentsModule { }

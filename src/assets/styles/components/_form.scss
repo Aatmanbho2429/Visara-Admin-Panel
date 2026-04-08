@@ -20,6 +20,13 @@
     }
 
     &__input{
+        &.is-invalid{
+            border-color: $color-invalid;
+        }
+    }
 
+    &__invalid-msg{
+        color: $color-invalid;
+        font-size: 1rem;
     }
 }

@@ -10,6 +10,7 @@
   "lblStatus": "Status",
   "lblDeviceId": "Device Id",
   "lblCompanyName": "Company Name",
+  "lblPassword": "Password",
   "lblSubscriptionStatus": "Subscription status",
   "lblSubscriptionEndDate": "Subscription End Date",
   "lblActions": "Actions",

@@ -10,73 +10,95 @@
             </div>
 
             <div class="form-card">
-                <form class="form">
+                <form class="form" [formGroup]="userForm">
                     <div class="row">
                         <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblFirstName' | translate}}</label>
-                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                            <label for="first_name" class="form__lbl">{{'lblFirstName' | translate}}</label>
+                            <input class="form__input" formControlName="first_name" pInputText id="first_name" [ngClass]="userForm.get('first_name').invalid && isFormSubmitted ? 'is-invalid':''" aria-describedby="first_name-help" />
+                            @if (isFormSubmitted && userForm.get('first_name').invalid) {
+                                <small class="form__invalid-msg">Please Enter First Name</small>
+                            }
                         </div>
                         <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblLastName' | translate}}</label>
-                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                            <label for="last_name" class="form__lbl">{{'lblLastName' | translate}}</label>
+                            <input class="form__input" [ngClass]="userForm.get('last_name').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="last_name" pInputText id="last_name" aria-describedby="last_name-help" />
+                            @if (isFormSubmitted && userForm.get('last_name').invalid) {
+                                <small class="form__invalid-msg">Please Enter Last Name</small>
+                            }
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblEmail' | translate}}</label>
-                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                            <label for="email" class="form__lbl">{{'lblEmail' | translate}}</label>
+                            <input class="form__input" [ngClass]="userForm.get('email').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="email" pInputText id="email" aria-describedby="email-help" />
+                            @if (isFormSubmitted && userForm.get('email').invalid && userForm.get('email').errors['required']) {
+                                <small class="form__invalid-msg">Please Enter Email</small>
+                            }
+                            @if (isFormSubmitted && userForm.get('email').invalid && userForm.get('email').errors['pattern']) {
+                                <small class="form__invalid-msg">Please Enter Valid Email</small>
+                            }
                         </div>
                         <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblPhone' | translate}}</label>
-                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblDeviceId' | translate}}</label>
-                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
-                        </div>
-                        <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblCompanyName' | translate}}</label>
-                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                            <label for="phone" class="form__lbl">{{'lblPhone' | translate}}</label>
+                            <input class="form__input" [ngClass]="userForm.get('phone').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="phone" pInputText id="phone" aria-describedby="phone-help" />
+                            @if (isFormSubmitted && userForm.get('phone').invalid) {
+                                <small class="form__invalid-msg">Please Enter Valid Phone Number</small>
+                            }
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblStatus' | translate}}</label>
-                            <p-togglebutton  class="form__input" onLabel="Active" offLabel="In-Active" class="w-24" />
-                            
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
+                            <label for="device_id" class="form__lbl">{{'lblDeviceId' | translate}}</label>
+                            <input class="form__input" [ngClass]="userForm.get('device_id').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="device_id" pInputText id="device_id" aria-describedby="device_id-help" />
+                            @if (isFormSubmitted && userForm.get('device_id').invalid) {
+                                <small class="form__invalid-msg">Please Enter Device Id</small>
+                            }
+                        </div>
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="company_name" class="form__lbl">{{'lblCompanyName' | translate}}</label>
+                            <input class="form__input" [ngClass]="userForm.get('company_name').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="company_name" pInputText id="company_name" aria-describedby="company_name-help" />
+                            @if (isFormSubmitted && userForm.get('company_name').invalid) {
+                                <small class="form__invalid-msg">Please Enter Company Name</small>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="status" class="form__lbl">{{'lblStatus' | translate}}</label>
+                            <p-togglebutton  class="form__input" [ngClass]="userForm.get('status').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="status" onLabel="Active" offLabel="In-Active" class="w-24" />
+                            @if (isFormSubmitted && userForm.get('status').invalid) {
+                                <small class="form__invalid-msg">Please Enter Status</small>
+                            }
+                        </div>
+
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="password" class="form__lbl">{{'lblPassword' | translate}}</label>
+                            <input class="form__input" [ngClass]="userForm.get('password').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="password" pInputText id="password" aria-describedby="password-help" />
+                            @if (isFormSubmitted && userForm.get('password').invalid) {
+                                <small class="form__invalid-msg">Please Enter Password</small>
+                            }
+                        </div>
+                        
+                    </div>
+
+                    <!-- <div class="row">
+                        <div class="flex flex-col gap-2 form__group col-6">
+                            <label for="username" class="form__lbl">{{'lblSubscriptionEndDate' | translate}}</label>
+                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
                         </div>
                         <div class="flex flex-col gap-2 form__group col-6">
                             <label for="username" class="form__lbl">{{'lblSubscriptionStatus' | translate}}</label>
                             <p-togglebutton  class="form__input" onLabel="Subscribed" offLabel="Expired" class="w-24" />
                             
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
-                        </div>
-                    </div>
+                        </div> 
+                    </div> -->
 
                     <div class="row">
                         <div class="flex flex-col gap-2 form__group col-6">
-                            <label for="username" class="form__lbl">{{'lblSubscriptionEndDate' | translate}}</label>
-                            <input class="form__input" pInputText id="username" aria-describedby="username-help" />
-                            
-                            <!-- <small id="username-help">Enter your username to reset your password.</small> -->
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="flex flex-col gap-2 form__group col-6">
-                            <p-button class="add-btn form__btn" label="Submit" [routerLink]="['']"></p-button>
+                            <p-button class="add-btn form__btn" label="Submit" (click)="onSubmit()"></p-button>
                         </div>
 
                     </div>

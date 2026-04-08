@@ -7,7 +7,7 @@ import Aura from '@primeuix/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -97,6 +97,7 @@ export const appConfig: ApplicationConfig = {
     }),
     MessageService,
     DatePipe,
+    ConfirmationService,
     provideTranslateService({
       loader: provideTranslateHttpLoader({ prefix: "./assets/i18n/" }),
       fallbackLang: 'en',

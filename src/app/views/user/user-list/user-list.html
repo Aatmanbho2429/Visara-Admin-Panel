@@ -38,10 +38,10 @@
                         <td><p-tag [value]="customer.subscriptionStatus" [severity]="getSeveritySubscription(customer.subscriptionStatus)"></p-tag></td>
                         <td>{{customer.subscriptionEndDate}}</td>
                         <td>
-                            <p-button variant="text">
+                            <p-button variant="text" [routerLink]="['/edit', customer.id]">
                                 <i class="pi pi-pencil"></i>
                             </p-button>
-                            <p-button variant="text">
+                            <p-button variant="text" (click)="confirm2($event)">
                                 <i class="pi pi-trash"></i>
                             </p-button>
                         </td>
@@ -51,3 +51,5 @@
         </div>
     </div>
 </section>
+
+<p-confirmdialog />
