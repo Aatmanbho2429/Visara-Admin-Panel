@@ -3,6 +3,8 @@ import { PrimengComponentsModule } from '../../../shared/primeng-components-modu
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SystemService } from '../../../service/system.service';
+import { UserService } from '../../../service/user/user.service';
+import { UserListRequest } from '../../../models/request/userListRequest';
 
 @Component({
   selector: 'app-user-list',
@@ -13,45 +15,55 @@ import { SystemService } from '../../../service/system.service';
 export class UserList implements OnInit {
 
   customers: any[] = [];
-  allCustomers: any[] = []; // full dataset
-
-  selectedPageSize: number = 10;
+  public pageState: any;
+  selectedPageSize: number = 25;
   public totalCount: number = 0;
   public first: number = 0;
-
-  constructor(public messageService:MessageService,public confirmationService:ConfirmationService,
-    public systemService:SystemService
+  public UserListRequest: UserListRequest = new UserListRequest();
+  public isLoading: boolean = false;
+  
+  constructor(public messageService: MessageService, public confirmationService: ConfirmationService,
+    public systemService: SystemService,
+    public userService: UserService
   ) {
-    
+
   }
 
   ngOnInit(): void {
-    // Generate dummy data (100 records)
-    this.allCustomers = Array.from({ length: 100 }, (_, i) => ({
-      firstName: 'User' + (i + 1),
-      lastName: 'Test' + (i + 1),
-      email: `user${i + 1}@mail.com`,
-      phone: '9999999999',
-      status: i % 2 === 0 ? 'Active' : 'Inactive',
-      deviceId: 'DEV-' + (1000 + i),
-      subscriptionStatus: i % 2 === 0 ? 'Subscribed' : 'Expired',
-      subscriptionEndDate: new Date(2026, 11, (i % 28) + 1)
-    }));
+    // this.bindUserList(event)
+  }
 
-    this.totalCount = this.allCustomers.length;
+  bindUserListModel() {
 
-    // initial load
-    this.bindUserList({ first: 0, rows: this.selectedPageSize });
+    const first = this.pageState?.first ?? 0;
+    const rows = this.pageState?.rows ?? 25;
+
+    this.UserListRequest.page_no = Math.floor(first / rows) + 1;
+
+    this.UserListRequest.page_size = rows;
+    this.UserListRequest.page_size =
+      this.pageState && this.pageState.rows ? this.pageState.rows : 25;
+
+    this.UserListRequest.sorting_type = "ASC";
+    this.UserListRequest.sorting_column_name =
+      this.pageState && this.pageState.sortField
+        ? this.pageState.sortField
+        : "";
+    this.UserListRequest.search_text = '';
   }
 
   bindUserList(event: any) {
-    const start = event.first || 0;
-    const rows = event.rows || this.selectedPageSize;
+    if (this.isLoading) return;  // ← prevent duplicate calls
+    this.isLoading = true;
 
-    this.first = start;
-
-    // slice data for current page
-    this.customers = this.allCustomers.slice(start, start + rows);
+    this.selectedPageSize = event.rows;
+    this.pageState = event;
+    this.bindUserListModel();
+    this.userService.GetUserList(this.UserListRequest).subscribe(d => {
+      this.customers = d.data.list;
+      this.totalCount = d.data.total_count;
+      this.isLoading = false;
+    });
   }
 
   getSeverityStauts(status: string) {
@@ -95,28 +107,28 @@ export class UserList implements OnInit {
   }
 
   confirm2(event: Event) {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Do you want to delete this record?',
-            header: 'Danger Zone',
-            icon: 'pi pi-info-circle',
-            rejectLabel: 'Cancel',
-            rejectButtonProps: {
-                label: 'Cancel',
-                severity: 'secondary',
-                outlined: true
-            },
-            acceptButtonProps: {
-                label: 'Delete',
-                severity: 'danger'
-            },
-        
-            accept: () => {
-              this.systemService.showSuccess('Record deleted successfully');
-            },
-            reject: () => {
-                this.systemService.showError('You have rejected');
-            }
-        });
-    }
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger'
+      },
+
+      accept: () => {
+        this.systemService.showSuccess('Record deleted successfully');
+      },
+      reject: () => {
+        this.systemService.showError('You have rejected');
+      }
+    });
+  }
 }

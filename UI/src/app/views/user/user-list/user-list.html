@@ -9,7 +9,7 @@
                 <p-button class="add-btn" label="Add User" [routerLink]="['/add']"><i class="pi pi-plus" pButtonIcon></i></p-button>
 
             </div>
-            <p-table [value]="customers" [paginator]="true" stripedRows [rows]="selectedPageSize"
+            <p-table [value]="customers" [(first)]="first" [paginator]="true" stripedRows [rows]="selectedPageSize"
                 [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20, 25]"
                 [alwaysShowPaginator]="customers.length > 0" [totalRecords]="totalCount" [lazy]="true"
                 (onLazyLoad)="bindUserList($event)">
@@ -27,18 +27,18 @@
                     </tr>
                 </ng-template>
 
-                <ng-template #body let-customer>
+                <ng-template #body let-user>
                     <tr>
-                        <td>{{customer.firstName}}</td>
-                        <td>{{customer.lastName}}</td>
-                        <td>{{customer.email}}</td>
-                        <td>{{customer.phone}}</td>
-                        <td><p-tag [value]="customer.status" [severity]="getSeverityStauts(customer.status)"></p-tag></td>
-                        <td>{{customer.deviceId}}</td>
-                        <td><p-tag [value]="customer.subscriptionStatus" [severity]="getSeveritySubscription(customer.subscriptionStatus)"></p-tag></td>
-                        <td>{{customer.subscriptionEndDate}}</td>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.phone}}</td>
+                        <td><p-tag [value]="user.status" [severity]="getSeverityStauts(user.status)"></p-tag></td>
+                        <td>{{user.device_id}}</td>
+                        <td><p-tag [value]="user.subscription_status" [severity]="getSeveritySubscription(user.subscription_status)"></p-tag></td>
+                        <td>{{user.subscription_end_date}}</td>
                         <td>
-                            <p-button variant="text" [routerLink]="['/edit', customer.id]">
+                            <p-button variant="text" [routerLink]="['/edit', user.id]">
                                 <i class="pi pi-pencil"></i>
                             </p-button>
                             <p-button variant="text" (click)="confirm2($event)">
