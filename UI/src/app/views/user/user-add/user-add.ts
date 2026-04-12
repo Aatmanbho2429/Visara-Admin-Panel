@@ -3,6 +3,8 @@ import { PrimengComponentsModule } from '../../../shared/primeng-components-modu
 import { TranslateModule } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserAddRequest } from '../../../models/request/userAddRequest';
+import { PythonApi } from '../../../service/python-api';
 @Component({
   selector: 'app-user-add',
   imports: [PrimengComponentsModule, TranslateModule,FormsModule ,ReactiveFormsModule,CommonModule],
@@ -13,8 +15,9 @@ export class UserAdd implements OnInit {
 
   public userForm: FormGroup;
   isFormSubmitted: boolean = false;
+  userAddRequest:UserAddRequest=new UserAddRequest();
   
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,public pythonApi:PythonApi) {
     
   }
 
@@ -35,12 +38,25 @@ export class UserAdd implements OnInit {
     });
   }
 
+  modelBeforeSubmit(){
+    this.userAddRequest.first_name=this.userForm.get('first_name').value;
+    this.userAddRequest.last_name=this.userForm.get('last_name').value;
+    this.userAddRequest.email=this.userForm.get('email').value;
+    this.userAddRequest.phone=this.userForm.get('phone').value;
+    this.userAddRequest.device_id=this.userForm.get('device_id').value;
+    this.userAddRequest.company_name=this.userForm.get('company_name').value;
+    this.userAddRequest.status=this.userForm.get('status').value;
+    this.userAddRequest.password=this.userForm.get('password').value;
+  }
+
   onSubmit() {
     this.isFormSubmitted = true;
     if(this.userForm.invalid) {
       return
     }else{
-      console.log(this.userForm.value);
+      this.modelBeforeSubmit()
+      this.pythonApi.AddUser(this.userAddRequest).subscribe()
+      // console.log(this.userAddRequest);
 
     }
   }

@@ -5,6 +5,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { SystemService } from '../../../service/system.service';
 import { UserService } from '../../../service/user/user.service';
 import { UserListRequest } from '../../../models/request/userListRequest';
+import { PythonApi } from '../../../service/python-api';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -21,16 +23,22 @@ export class UserList implements OnInit {
   public first: number = 0;
   public UserListRequest: UserListRequest = new UserListRequest();
   public isLoading: boolean = false;
+  public subscription:Subscription=new Subscription()
   
   constructor(public messageService: MessageService, public confirmationService: ConfirmationService,
     public systemService: SystemService,
-    public userService: UserService
+    public userService: UserService,public pythonApi:PythonApi
   ) {
 
   }
 
   ngOnInit(): void {
     // this.bindUserList(event)
+    var a= this.pythonApi.printHello()
+    console.log('response from python'+a.subscribe(a=>{
+      console.log(' i am a '+a)
+    }))
+    
   }
 
   bindUserListModel() {

@@ -1,20 +1,65 @@
-from fastapi import FastAPI
-from app.service import userApi as users
-from fastapi.middleware.cors import CORSMiddleware
+import webview
+import platform
+from app.api import Api, set_window
+import sys
+sys.dont_write_bytecode = True
 
-app = FastAPI()
+api      = Api()
+SYSTEM   = platform.system()
 
-origins = [
-    "http://localhost:4201",
-]
+UI_PATH = "http://localhost:4200/"
+SPLASH_HTML = """
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #0f0f0f;
+            font-family: sans-serif;
+            color: white;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #333;
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        p { margin-top: 16px; font-size: 14px; color: #888; }
+        .container { text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="spinner"></div>
+        <p>Loading Visara...</p>
+    </div>
+</body>
+</html>
+"""
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+
+window = webview.create_window(
+    "Visara",
+    html=SPLASH_HTML,
+    js_api=api,
 )
 
-# Register routers — like importing feature modules in Angular
-app.include_router(users.router)
+set_window(window)
+
+def on_loaded():
+    window.load_url(UI_PATH)
+
+webview.start(
+        http_server=True,
+        private_mode=False,
+        debug=True,
+        func=on_loaded
+    )
