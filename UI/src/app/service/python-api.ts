@@ -3,6 +3,8 @@ import { catchError, finalize, from, Observable, throwError } from 'rxjs';
 import { BaseResponse } from '../models/response/baseResponse';
 import { LoaderService } from './loader.service';
 import { UserAddRequest } from '../models/request/userAddRequest';
+import { UserListResponse } from '../models/response/userListResponse';
+import { UserListRequest } from '../models/request/userListRequest';
 
 
 @Injectable({
@@ -32,6 +34,10 @@ export class PythonApi {
 
     AddUser(userRequestModel:UserAddRequest): Observable<string>{
         return this.call(() => window.pywebview.api.AddUser(userRequestModel));
+    }
+
+    GetUserList(userListRequest:UserListRequest): Observable<UserListResponse>{
+        return this.call(() => window.pywebview.api.GetUserList(userListRequest));
     }
     
 }

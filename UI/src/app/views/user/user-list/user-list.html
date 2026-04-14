@@ -12,6 +12,7 @@
             <p-table [value]="customers" [(first)]="first" [paginator]="true" stripedRows [rows]="selectedPageSize"
                 [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20, 25]"
                 [alwaysShowPaginator]="customers.length > 0" [totalRecords]="totalCount" [lazy]="true"
+                (onLazyLoad)="bindUserList($event)"
                 >
                 <ng-template #header>
                     <tr>

@@ -46,3 +46,27 @@ class Api:
             return {"success": False, "message": "No internet connection. Please check your network."}
         except Exception as e:
             return {"success": False, "message": f"Error creating user: {str(e)}"}
+        
+    def GetUserList(self,data:dict):
+        """
+        Fetches paginated user list from Supabase.
+        Expects dict: page_no, page_size, sorting_column_name, sorting_type, search_text
+        """
+        try:
+            r = requests.post(
+                f"{SUPABASE_EDGE}/get-user-list",
+                json={
+                    "page_no":              data.get("page_no", 1),
+                    "page_size":            data.get("page_size", 25),
+                    "sorting_column_name":  data.get("sorting_column_name", ""),
+                    "sorting_type":         data.get("sorting_type", "ASC"),
+                    "search_text":          data.get("search_text", ""),
+                },
+                timeout=15
+            )
+            return r.json()
+    
+        except requests.exceptions.ConnectionError:
+            return {"success": False, "message": "No internet connection."}
+        except Exception as e:
+            return {"success": False, "message": str(e)}

@@ -34,10 +34,10 @@ export class UserList implements OnInit {
 
   ngOnInit(): void {
     // this.bindUserList(event)
-    var a= this.pythonApi.printHello()
-    console.log('response from python'+a.subscribe(a=>{
-      console.log(' i am a '+a)
-    }))
+    // var a= this.pythonApi.printHello()
+    // console.log('response from python'+a.subscribe(a=>{
+    //   console.log(' i am a '+a)
+    // }))
     
   }
 
@@ -67,11 +67,15 @@ export class UserList implements OnInit {
     this.selectedPageSize = event.rows;
     this.pageState = event;
     this.bindUserListModel();
-    this.userService.GetUserList(this.UserListRequest).subscribe(d => {
-      this.customers = d.data.list;
-      this.totalCount = d.data.total_count;
-      this.isLoading = false;
-    });
+    this.pythonApi.GetUserList(this.UserListRequest).subscribe(d=>{
+      console.log(d)
+    })
+    // this.userService.GetUserList(this.UserListRequest).subscribe(d => {
+    //   this.customers = d.data.list;
+    //   this.totalCount = d.data.total_count;
+    //   this.isLoading = false;
+    // });
+    
   }
 
   getSeverityStauts(status: string) {
