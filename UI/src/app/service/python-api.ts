@@ -1,49 +1,70 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { catchError, finalize, from, Observable, throwError } from 'rxjs';
 import { BaseResponse } from '../models/response/baseResponse';
 import { LoaderService } from './loader.service';
 import { UserAddRequest } from '../models/request/userAddRequest';
 import { UserListResponse } from '../models/response/userListResponse';
 import { UserListRequest } from '../models/request/userListRequest';
+import { UserGetByIdResponse } from '../models/response/userGetByIdResponse';
+import { UserEditRequest } from '../models/request/userEditRequest';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class PythonApi {
-    
 
-    constructor(public loader:LoaderService) {
-    }
+    constructor(
+        public loader: LoaderService,
+        private zone: NgZone
+    ) {}
 
-     private call<T>(apiMethod: () => Promise<T>): Observable<T> {
+    private call<T>(apiMethod: () => Promise<T>): Observable<T> {
         this.loader.show();
 
-        return from(apiMethod()).pipe(
+        const zoned = new Promise<T>((resolve, reject) => {
+            apiMethod()
+                .then(result => this.zone.run(() => resolve(result)))
+                .catch(err   => this.zone.run(() => reject(err)));
+        });
+
+        return from(zoned).pipe(
             catchError(err => {
                 console.error('PyWebview API Error:', err);
                 return throwError(() => new Error(err));
             }),
-            finalize(() => this.loader.hide())   // hides loader on success OR error
+            finalize(() => this.loader.hide())
         );
     }
-    
-     printHello(): Observable<string>{
+
+    printHello(): Observable<string> {
         return this.call(() => window.pywebview.api.PrintHello());
     }
 
-    AddUser(userRequestModel:UserAddRequest): Observable<string>{
+    AddUser(userRequestModel: UserAddRequest): Observable<BaseResponse<string>> {
         return this.call(() => window.pywebview.api.AddUser(userRequestModel));
     }
 
-    GetUserList(userListRequest:UserListRequest): Observable<UserListResponse>{
+    GetUserList(userListRequest: UserListRequest): Observable<BaseResponse<UserListResponse>> {
         return this.call(() => window.pywebview.api.GetUserList(userListRequest));
     }
-    
+
+    DeleteUser(user_id: string): Observable<BaseResponse<number>> {
+        return this.call(() => window.pywebview.api.DeleteUser(user_id));
+    }
+
+    GetUserById(user_id: string): Observable<BaseResponse<UserGetByIdResponse>> {
+        return this.call(() => window.pywebview.api.GetUserById(user_id));
+    }
+
+    EditUser(userEditRequestModel: UserEditRequest): Observable<BaseResponse<string>> {
+        return this.call(() => window.pywebview.api.EditUser(userEditRequestModel));
+    }
+
 }
 
 declare global {
-  interface Window {
-    pywebview: any;
-  }
+    interface Window {
+        pywebview: any;
+    }
 }

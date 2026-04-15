@@ -7,7 +7,7 @@ sys.dont_write_bytecode = True
 api      = Api()
 SYSTEM   = platform.system()
 
-UI_PATH = "http://localhost:4200/"
+UI_PATH = "http://localhost:4201/"
 SPLASH_HTML = """
 <!DOCTYPE html>
 <html>

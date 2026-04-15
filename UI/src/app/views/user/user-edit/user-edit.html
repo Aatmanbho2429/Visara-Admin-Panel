@@ -3,7 +3,7 @@
     <div class="content__body">
         <div class="card card-background">
             <div class="card__header">
-                <h2 class="card__title">Add User</h2>
+                <h2 class="card__title">Edit User</h2>
                 <p-button class="add-btn" label="Go Back" [routerLink]="['']"><i class="pi pi-arrow-left"
                         pButtonIcon></i></p-button>
 
@@ -74,13 +74,13 @@
                             }
                         </div>
 
-                        <div class="flex flex-col gap-2 form__group col-6">
+                        <!-- <div class="flex flex-col gap-2 form__group col-6">
                             <label for="password" class="form__lbl">{{'lblPassword' | translate}}</label>
                             <input class="form__input" [ngClass]="userForm.get('password').invalid && isFormSubmitted ? 'is-invalid':''" formControlName="password" pInputText id="password" aria-describedby="password-help" />
                             @if (isFormSubmitted && userForm.get('password').invalid) {
                                 <small class="form__invalid-msg">Please Enter Password</small>
                             }
-                        </div>
+                        </div> -->
                         
                     </div>
 

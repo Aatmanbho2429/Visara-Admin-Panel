@@ -23,11 +23,11 @@ export class UserList implements OnInit {
   public first: number = 0;
   public UserListRequest: UserListRequest = new UserListRequest();
   public isLoading: boolean = false;
-  public subscription:Subscription=new Subscription()
-  
+  public subscription: Subscription = new Subscription()
+
   constructor(public messageService: MessageService, public confirmationService: ConfirmationService,
     public systemService: SystemService,
-    public userService: UserService,public pythonApi:PythonApi
+    public userService: UserService, public pythonApi: PythonApi
   ) {
 
   }
@@ -38,7 +38,7 @@ export class UserList implements OnInit {
     // console.log('response from python'+a.subscribe(a=>{
     //   console.log(' i am a '+a)
     // }))
-    
+
   }
 
   bindUserListModel() {
@@ -67,35 +67,36 @@ export class UserList implements OnInit {
     this.selectedPageSize = event.rows;
     this.pageState = event;
     this.bindUserListModel();
-    this.pythonApi.GetUserList(this.UserListRequest).subscribe(d=>{
-      console.log(d)
+    this.pythonApi.GetUserList(this.UserListRequest).subscribe(d => {
+      this.customers = d.data.list;
+      this.totalCount = d.data.total_count;
+      this.isLoading = false;
     })
-    // this.userService.GetUserList(this.UserListRequest).subscribe(d => {
-    //   this.customers = d.data.list;
-    //   this.totalCount = d.data.total_count;
-    //   this.isLoading = false;
-    // });
-    
   }
 
-  getSeverityStauts(status: string) {
-    switch (status) {
-      case 'unqualified':
-        return 'danger';
+  refreshList() {
+    this.isLoading = false;          
+    this.bindUserList(this.pageState);
+}
 
-      case 'Active':
+  getSeverityStauts(status: boolean) {
+    switch (status) {
+      case true:
         return 'success';
 
-      case 'Inactive':
+      case false:
         return 'info';
-
-      case 'negotiation':
-        return 'warn';
-
-      case 'renewal':
-        return null;
     }
-    return null;
+  }
+
+  getRealStatus(status: boolean) {
+    switch (status) {
+      case true:
+        return 'Active';
+
+      case false:
+        return 'In-Active';
+    }
   }
 
   getSeveritySubscription(status: string) {
@@ -118,11 +119,11 @@ export class UserList implements OnInit {
     return null;
   }
 
-  confirm2(event: Event) {
+  confirm2(event: Event, user_id: string) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
-      header: 'Danger Zone',
+      header: 'Delete User',
       icon: 'pi pi-info-circle',
       rejectLabel: 'Cancel',
       rejectButtonProps: {
@@ -136,11 +137,20 @@ export class UserList implements OnInit {
       },
 
       accept: () => {
-        this.systemService.showSuccess('Record deleted successfully');
+        this.pythonApi.DeleteUser(user_id).subscribe(d => {
+            if (d['success'] == false) {
+              this.systemService.showError(d['message']);
+            } else {
+              this.systemService.showSuccess(d['message']);
+            }
+            this.refreshList(); 
+          })
+          
       },
       reject: () => {
         this.systemService.showError('You have rejected');
       }
     });
+
   }
 }

@@ -17,7 +17,7 @@ export class UserService extends CoreDataService {
     super(httpClient,environment.ApiUrl, Controllers.User);
   }
 
-  GetUserList(userListRequest: UserListRequest): Observable<BaseResponse<UserListResponse>> {
-    return this.list<BaseResponse<UserListResponse>>(userListRequest,'/' + Action.list);
-  }
+  // GetUserList(userListRequest: UserListRequest): Observable<BaseResponse<UserListResponse>> {
+  //   return this.list<BaseResponse<UserListResponse>>(userListRequest,'/' + Action.list);
+  // }
 }

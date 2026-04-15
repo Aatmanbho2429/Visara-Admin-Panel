@@ -1,7 +1,6 @@
 export class BaseResponse<T> {
-    status: number;
-    //data: T;
-    data: any;
+    success: boolean;
+    data: T;
     message: string;
     token:string;
     

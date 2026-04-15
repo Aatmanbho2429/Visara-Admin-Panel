@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { UserAddRequest } from '../../../models/request/userAddRequest';
 import { PythonApi } from '../../../service/python-api';
+import { SystemService } from '../../../service/system.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-add',
   imports: [PrimengComponentsModule, TranslateModule,FormsModule ,ReactiveFormsModule,CommonModule],
@@ -17,7 +19,7 @@ export class UserAdd implements OnInit {
   isFormSubmitted: boolean = false;
   userAddRequest:UserAddRequest=new UserAddRequest();
   
-  constructor(private formBuilder: FormBuilder,public pythonApi:PythonApi) {
+  constructor(private formBuilder: FormBuilder,public pythonApi:PythonApi,public systemService: SystemService,private router: Router) {
     
   }
 
@@ -55,7 +57,15 @@ export class UserAdd implements OnInit {
       return
     }else{
       this.modelBeforeSubmit()
-      this.pythonApi.AddUser(this.userAddRequest).subscribe()
+      this.pythonApi.AddUser(this.userAddRequest).subscribe(d=>{
+        if(d['success']==false){
+          this.systemService.showError(d['message']);
+        } else {
+          this.systemService.showSuccess(d['message']);
+        }
+        this.router.navigate(['/']);
+        //this.systemService.showSuccess('Record deleted successfully');
+      })
       // console.log(this.userAddRequest);
 
     }
