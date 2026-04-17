@@ -9,9 +9,9 @@
                 <p-button class="add-btn" label="Add User" [routerLink]="['/add']"><i class="pi pi-plus" pButtonIcon></i></p-button>
 
             </div>
-            <p-table [value]="customers" [(first)]="first" [paginator]="true" stripedRows [rows]="selectedPageSize"
+            <p-table [value]="(userListResponse$ | async)?.data?.list" [(first)]="first" [paginator]="true" stripedRows [rows]="selectedPageSize"
                 [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20, 25]"
-                [alwaysShowPaginator]="customers.length > 0" [totalRecords]="totalCount" [lazy]="true"
+                [alwaysShowPaginator]="(userListResponse$ | async)?.data?.list.length > 0" [totalRecords]="totalCount" [lazy]="true"
                 (onLazyLoad)="bindUserList($event)"
                 >
                 <ng-template #header>

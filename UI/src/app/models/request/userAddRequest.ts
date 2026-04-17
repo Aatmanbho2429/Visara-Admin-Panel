@@ -3,7 +3,6 @@ export class UserAddRequest{
     last_name:string;
     email:string;
     phone:string;
-    status:boolean;
     device_id:string;
     company_name:string;
     password:string;

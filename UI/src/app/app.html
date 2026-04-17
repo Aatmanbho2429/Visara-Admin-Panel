@@ -1,8 +1,9 @@
 <p-toast />
-<div class="loader-overlay" *ngIf="loading$ | async">
+<ng-http-loader spinner="sk-wave"></ng-http-loader>
+<!-- <div class="loader-overlay" *ngIf="loading$ | async">
         <div class="spinner-wrapper">
             <div class="spinner"></div>
         </div>
         <span class="loader-text">Loading...</span>
-    </div>
+    </div> -->
 <router-outlet></router-outlet>

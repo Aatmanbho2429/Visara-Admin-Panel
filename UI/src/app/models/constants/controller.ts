@@ -1,5 +1,5 @@
 export const Controllers = {
-    "User": "users"
+    "User": "user"
 }
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PrimengComponentsModule } from '../../../shared/primeng-components-module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { SystemService } from '../../../service/system.service';
 import { PythonApi } from '../../../service/python-api';
 import { UserGetByIdResponse } from '../../../models/response/userGetByIdResponse';
 import { UserEditRequest } from '../../../models/request/userEditRequest';
+import { UserService } from '../../../service/user/user.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -22,7 +23,7 @@ export class UserEdit implements OnInit {
   public isLoading: boolean = false;
   public userGetByIdResponse:UserGetByIdResponse=new UserGetByIdResponse();
   public userEditRequest:UserEditRequest=new UserEditRequest();
-  constructor(private fb: FormBuilder, private activatedroute: ActivatedRoute,public pythonApi:PythonApi,public systemService: SystemService,private router: Router) { }
+  constructor(private fb: FormBuilder, private activatedroute: ActivatedRoute,public pythonApi:PythonApi,public systemService: SystemService,private router: Router,public userService: UserService,private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.setFormBuilder();
@@ -33,9 +34,7 @@ export class UserEdit implements OnInit {
 
   getUserById(user_id: string) {
     this.isLoading = true;
-    this.pythonApi.GetUserById(user_id).subscribe(d=>{
-      this.isLoading = false;
-      // this.bindFormBuilder();
+    this.userService.GetUserById(user_id).subscribe(d=>{
       this.userGetByIdResponse = d.data;
       this.bindFormBuilder();
     })
@@ -61,8 +60,7 @@ export class UserEdit implements OnInit {
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       device_id: ['', Validators.required],
       company_name: ['', Validators.required],
-      status: [false],
-      password: ['', Validators.required]
+      status: [false]
     });
   }
 
@@ -82,13 +80,18 @@ export class UserEdit implements OnInit {
   onSubmit(): void {
      this.isFormSubmitted = true;
     if (this.userForm.invalid) {
-      console.log('hi');
-      console.log(this.userForm.value);
       return;
     } else {
-      console.log(this.userForm.value);
       this.modelBeforeSubmit();
-      this.pythonApi.EditUser(this.userEditRequest).subscribe();
+      this.pythonApi.EditUser(this.userEditRequest).subscribe(d=>{
+        console.log(d);
+        if(d['success']==false){
+          this.systemService.showError(d['message']);
+        } else {
+          this.systemService.showSuccess(d['message']);
+        }
+        this.router.navigate(['/']);
+      });
     }
   }
 

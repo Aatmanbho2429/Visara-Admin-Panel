@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { catchError, finalize, from, Observable, throwError } from 'rxjs';
+import { catchError, finalize, from, map, Observable, throwError } from 'rxjs';
 import { BaseResponse } from '../models/response/baseResponse';
 import { LoaderService } from './loader.service';
 import { UserAddRequest } from '../models/request/userAddRequest';
@@ -7,6 +7,7 @@ import { UserListResponse } from '../models/response/userListResponse';
 import { UserListRequest } from '../models/request/userListRequest';
 import { UserGetByIdResponse } from '../models/response/userGetByIdResponse';
 import { UserEditRequest } from '../models/request/userEditRequest';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class PythonApi {
 
     constructor(
         public loader: LoaderService,
-        private zone: NgZone
+        private zone: NgZone,public httpClient: HttpClient
     ) {}
 
     private call<T>(apiMethod: () => Promise<T>): Observable<T> {
@@ -38,7 +39,7 @@ export class PythonApi {
     }
 
     printHello(): Observable<string> {
-        return this.call(() => window.pywebview.api.PrintHello());
+        return this.httpClient.get<string>('http://127.0.0.1:8000/hello').pipe(map((list) => list))
     }
 
     AddUser(userRequestModel: UserAddRequest): Observable<BaseResponse<string>> {

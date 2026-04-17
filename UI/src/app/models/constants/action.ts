@@ -1,3 +1,6 @@
 export const Action = {
-    "list": "list"
+    "list": "list",
+    "Add": "add",
+    "Edit": "edit",
+    "Delete": "delete",
 }

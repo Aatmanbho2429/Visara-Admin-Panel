@@ -4,13 +4,14 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { pendingRequestsInterceptor$ } from 'ng-http-loader';
 
 const MyCustomTheme = definePreset(Aura, {
   semantic: {
@@ -102,6 +103,7 @@ export const appConfig: ApplicationConfig = {
       loader: provideTranslateHttpLoader({ prefix: "./assets/i18n/" }),
       fallbackLang: 'en',
       lang: 'en'
-    })
+    }),
+    provideHttpClient(withInterceptors([pendingRequestsInterceptor$]))
   ]
 };

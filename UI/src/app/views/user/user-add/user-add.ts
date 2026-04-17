@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PrimengComponentsModule } from '../../../shared/primeng-components-module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,6 +7,7 @@ import { UserAddRequest } from '../../../models/request/userAddRequest';
 import { PythonApi } from '../../../service/python-api';
 import { SystemService } from '../../../service/system.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../../service/user/user.service';
 @Component({
   selector: 'app-user-add',
   imports: [PrimengComponentsModule, TranslateModule,FormsModule ,ReactiveFormsModule,CommonModule],
@@ -19,7 +20,7 @@ export class UserAdd implements OnInit {
   isFormSubmitted: boolean = false;
   userAddRequest:UserAddRequest=new UserAddRequest();
   
-  constructor(private formBuilder: FormBuilder,public pythonApi:PythonApi,public systemService: SystemService,private router: Router) {
+  constructor(private formBuilder: FormBuilder,public pythonApi:PythonApi,public systemService: SystemService,private router: Router,public userService: UserService,private cd: ChangeDetectorRef) {
     
   }
 
@@ -35,7 +36,7 @@ export class UserAdd implements OnInit {
       phone: [null, [Validators.required]],
       device_id: [null, [Validators.required]],
       company_name: [null, [Validators.required]],
-      status: [true, [Validators.required]],
+      // status: [true, [Validators.required]],
       password: [null, [Validators.required]],
     });
   }
@@ -47,7 +48,7 @@ export class UserAdd implements OnInit {
     this.userAddRequest.phone=this.userForm.get('phone').value;
     this.userAddRequest.device_id=this.userForm.get('device_id').value;
     this.userAddRequest.company_name=this.userForm.get('company_name').value;
-    this.userAddRequest.status=this.userForm.get('status').value;
+    // this.userAddRequest.status=this.userForm.get('status').value;
     this.userAddRequest.password=this.userForm.get('password').value;
   }
 
@@ -57,7 +58,7 @@ export class UserAdd implements OnInit {
       return
     }else{
       this.modelBeforeSubmit()
-      this.pythonApi.AddUser(this.userAddRequest).subscribe(d=>{
+      this.userService.AddUser(this.userAddRequest).subscribe(d=>{
         if(d['success']==false){
           this.systemService.showError(d['message']);
         } else {

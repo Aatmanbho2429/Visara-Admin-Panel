@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PrimengComponentsModule } from '../../../shared/primeng-components-module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -6,11 +6,14 @@ import { SystemService } from '../../../service/system.service';
 import { UserService } from '../../../service/user/user.service';
 import { UserListRequest } from '../../../models/request/userListRequest';
 import { PythonApi } from '../../../service/python-api';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { BaseResponse } from '../../../models/response/baseResponse';
+import { UserListResponse } from '../../../models/response/userListResponse';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-list',
-  imports: [PrimengComponentsModule, TranslateModule],
+  imports: [PrimengComponentsModule, TranslateModule,AsyncPipe],
   templateUrl: './user-list.html',
   styleUrl: './user-list.scss',
 })
@@ -24,20 +27,15 @@ export class UserList implements OnInit {
   public UserListRequest: UserListRequest = new UserListRequest();
   public isLoading: boolean = false;
   public subscription: Subscription = new Subscription()
-
+  userListResponse$: Observable<BaseResponse<UserListResponse>>
   constructor(public messageService: MessageService, public confirmationService: ConfirmationService,
     public systemService: SystemService,
-    public userService: UserService, public pythonApi: PythonApi
+    public userService: UserService, public pythonApi: PythonApi,private cd: ChangeDetectorRef
   ) {
 
   }
 
   ngOnInit(): void {
-    // this.bindUserList(event)
-    // var a= this.pythonApi.printHello()
-    // console.log('response from python'+a.subscribe(a=>{
-    //   console.log(' i am a '+a)
-    // }))
 
   }
 
@@ -61,23 +59,23 @@ export class UserList implements OnInit {
   }
 
   bindUserList(event: any) {
-    if (this.isLoading) return;  // ← prevent duplicate calls
-    this.isLoading = true;
 
     this.selectedPageSize = event.rows;
     this.pageState = event;
     this.bindUserListModel();
-    this.pythonApi.GetUserList(this.UserListRequest).subscribe(d => {
+    this.userListResponse$ = this.userService.GetUserList(this.UserListRequest);
+    this.subscription.add(this.userListResponse$.subscribe(d => {
       this.customers = d.data.list;
       this.totalCount = d.data.total_count;
-      this.isLoading = false;
-    })
+      this.cd.detectChanges();
+    }))
+    // this.userService.GetUserList(this.UserListRequest)
   }
 
   refreshList() {
-    this.isLoading = false;          
+    this.isLoading = false;
     this.bindUserList(this.pageState);
-}
+  }
 
   getSeverityStauts(status: boolean) {
     switch (status) {
@@ -137,15 +135,15 @@ export class UserList implements OnInit {
       },
 
       accept: () => {
-        this.pythonApi.DeleteUser(user_id).subscribe(d => {
-            if (d['success'] == false) {
-              this.systemService.showError(d['message']);
-            } else {
-              this.systemService.showSuccess(d['message']);
-            }
-            this.refreshList(); 
-          })
-          
+        this.userService.DeleteUser(user_id).subscribe(d => {
+          if (d['success'] == false) {
+            this.systemService.showError(d['message']);
+          } else {
+            this.systemService.showSuccess(d['message']);
+          }
+          this.refreshList();
+        })
+
       },
       reject: () => {
         this.systemService.showError('You have rejected');
