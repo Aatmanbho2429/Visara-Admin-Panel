@@ -1,10 +1,37 @@
 import webview
 import platform
-from app.api import Api, set_window
+from app.api import router, set_window
 import sys
 sys.dont_write_bytecode = True
+import threading
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-api      = Api()
+app = FastAPI()
+
+origins = [
+    "http://localhost:4201"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(router)
+
+def run_server():
+    uvicorn.run(app, host="127.0.0.1", port=8000)
+
+# Start FastAPI in the background
+server_thread = threading.Thread(target=run_server, daemon=True)
+server_thread.start()
+
+# api      = Api()
 SYSTEM   = platform.system()
 
 UI_PATH = "http://localhost:4201/"
@@ -48,8 +75,7 @@ SPLASH_HTML = """
 
 window = webview.create_window(
     "Visara",
-    html=SPLASH_HTML,
-    js_api=api,
+    html=SPLASH_HTML
 )
 
 set_window(window)
